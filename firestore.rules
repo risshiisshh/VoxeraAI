@@ -1,0 +1,27 @@
+rules_version='2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── User profiles & progress ──────────────────────────────
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /progress/{doc} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // ── Article cache (server writes, public reads) ───────────
+    // Articles are generated server-side; clients only read cached content.
+    match /articles/{articleId} {
+      allow read: if true;
+      allow write: if false;  // Only writable via Admin SDK / server route
+    }
+
+    // ── Fallback: deny all other paths ────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
