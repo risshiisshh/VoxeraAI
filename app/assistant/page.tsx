@@ -1,8 +1,8 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import type { Message } from "@/types";
+import Image from "next/image";
 import { ELECTION_INFO } from "@/lib/election-data";
-import Footer from "@/components/layout/Footer";
 import { useAuth } from "@/lib/hooks/useAuth";
 import AuthModal from "@/components/ui/AuthModal";
 
@@ -66,8 +66,12 @@ export default function AssistantPage() {
           if (!line.startsWith("data: ")) continue;
           const raw = line.slice(6);
           if (raw === "[DONE]") break;
-          try { const { text } = JSON.parse(raw); full += text;
-            setMessages((p) => p.map((m) => m.id===aiId ? {...m, content:full, loading:false} : m)); }
+          try { 
+            const { text } = JSON.parse(raw); 
+            full = full + text;
+            const currentFull = full;
+            setMessages((p) => p.map((m) => m.id===aiId ? {...m, content:currentFull, loading:false} : m)); 
+          }
           catch {}
         }
       }
@@ -94,7 +98,7 @@ export default function AssistantPage() {
               user ? (
                 <div className="flex items-center gap-3">
                   {user.photoURL ? (
-                    <img src={user.photoURL} alt="Avatar" className="w-8 h-8 rounded-full border border-white/20" />
+                    <Image src={user.photoURL} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full border border-white/20" />
                   ) : (
                     <div className="w-8 h-8 rounded-full bg-[#F5A623]/20 flex items-center justify-center text-[#F5A623] text-sm font-black">
                       {(user.displayName ?? user.email ?? "U").charAt(0).toUpperCase()}
@@ -156,7 +160,7 @@ export default function AssistantPage() {
           <div className="px-6 pb-6 pt-2">
             <div className="flex items-end gap-3 p-3 rounded-2xl border border-white/[0.08] bg-[#162444] focus-within:border-[#F5A623]/50 transition-colors">
               <textarea id="chat-input" rows={1} className="flex-1 bg-transparent text-white placeholder-[#4A5A7A] text-sm resize-none outline-none py-1 max-h-40"
-                placeholder="Ask anything about elections…" value={input} onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask anything about elections…" aria-label="Ask anything about elections" value={input} onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage(input);} }} disabled={streaming} />
               <button className="btn-primary py-2 px-4 text-sm" onClick={() => sendMessage(input)} disabled={!input.trim()||streaming}>{streaming?"…":"Send"}</button>
             </div>

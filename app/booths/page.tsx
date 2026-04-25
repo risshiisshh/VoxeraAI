@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import Footer from "@/components/layout/Footer";
-import type { Metadata } from "next";
 
 // Major Indian cities with their coordinates for the map markers
 const FEATURED_CITIES = [
@@ -78,6 +77,7 @@ export default function BoothsPage() {
                 type="text"
                 className="input-base pl-11 pr-32 py-4 text-base rounded-2xl"
                 placeholder="Search city, constituency or PIN code…"
+                aria-label="Search city, constituency or PIN code"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />

@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { streamCivicChat } from "@/lib/gemini";
+import { apiLimiter } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  if (!apiLimiter.check(ip)) {
+    return NextResponse.json({ error: "Too many requests. Please wait a moment." }, { status: 429 });
+  }
+
   try {
     const { messages } = await req.json() as {
       messages: Array<{ role: "user" | "assistant"; content: string }>;

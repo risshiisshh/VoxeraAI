@@ -216,7 +216,7 @@ export default function LearnPage() {
             <div className="text-center py-20">
               <div className="text-5xl mb-4" aria-hidden="true">🔍</div>
               <p className="text-white font-bold text-xl mb-2">No results for &ldquo;{query}&rdquo;</p>
-              <p className="text-[#8899BB] mb-6">Try searching for "EVM", "registration", "voter rights", or "Panchayat"</p>
+              <p className="text-[#8899BB] mb-6">Try searching for &quot;EVM&quot;, &quot;registration&quot;, &quot;voter rights&quot;, or &quot;Panchayat&quot;</p>
               <button onClick={() => setQuery("")} className="btn-secondary">Clear Search</button>
             </div>
           )}

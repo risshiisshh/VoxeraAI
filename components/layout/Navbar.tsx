@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useAuth } from "@/lib/hooks/useAuth";
 import AuthModal from "@/components/ui/AuthModal";
 
@@ -60,7 +61,7 @@ export default function Navbar() {
                       className="flex items-center gap-2 hover:opacity-80 transition-opacity"
                     >
                       {user.photoURL ? (
-                        <img src={user.photoURL} alt={user.displayName ?? "User"} className="w-8 h-8 rounded-full object-cover border border-white/20" />
+                        <Image src={user.photoURL} alt={user.displayName ?? "User"} width={32} height={32} className="w-8 h-8 rounded-full object-cover border border-white/20" />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-[#F5A623] flex items-center justify-center text-[#0A1628] font-black text-sm">
                           {(user.displayName ?? user.email ?? "U").charAt(0).toUpperCase()}

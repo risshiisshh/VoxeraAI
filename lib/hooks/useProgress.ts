@@ -18,7 +18,7 @@ export function useProgress() {
   // Load progress from Firestore on mount / user change
   useEffect(() => {
     if (!user) {
-      setState({ guidesRead: new Set(), loading: false });
+      setTimeout(() => setState({ guidesRead: new Set(), loading: false }), 0);
       return;
     }
 

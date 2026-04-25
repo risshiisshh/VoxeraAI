@@ -56,7 +56,7 @@ export default function ArticlePage() {
   // Auto-mark as read when 80% scrolled
   useEffect(() => {
     if (readProgress >= 80 && !markedRead && !progressLoading) {
-      setMarkedRead(true);
+      setTimeout(() => setMarkedRead(true), 0);
       markAsRead(guide.id);
     }
   }, [readProgress, markedRead, progressLoading, guide.id, markAsRead]);

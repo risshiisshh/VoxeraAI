@@ -1,39 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getFirebaseDb } from "@/lib/firebase";
+import { apiLimiter } from "@/lib/rate-limit";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export const runtime = "nodejs";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
 
-// Rate limiting: track requests per IP (in-memory, resets on server restart)
-const requestCounts = new Map<string, { count: number; resetAt: number }>();
-const MAX_REQUESTS_PER_MINUTE = 10;
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = requestCounts.get(ip);
-  if (!entry || now > entry.resetAt) {
-    requestCounts.set(ip, { count: 1, resetAt: now + 60_000 });
-    return true;
-  }
-  if (entry.count >= MAX_REQUESTS_PER_MINUTE) return false;
-  entry.count++;
-  return true;
-}
-
 export async function POST(req: NextRequest) {
-  try {
-    // Rate limit check
-    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-    if (!checkRateLimit(ip)) {
-      return NextResponse.json(
-        { error: "Too many requests. Please wait a moment before generating another article." },
-        { status: 429 }
-      );
-    }
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  if (!apiLimiter.check(ip)) {
+    return NextResponse.json({ error: "Too many requests. Please wait a moment." }, { status: 429 });
+  }
 
+  try {
     const { guideId, contentPrompt, title } = (await req.json()) as {
       guideId: string;
       contentPrompt: string;
