@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
 import { getFirebaseDb } from "@/lib/firebase";
 import { apiLimiter } from "@/lib/rate-limit";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
 
-const articleSchema = {
+const articleSchema: Schema = {
   description: "A civic education article structure",
   type: SchemaType.OBJECT,
   properties: {

@@ -39,6 +39,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // @ts-expect-error NextConfig types might not explicitly include eslint in older/current versions
   eslint: {
     ignoreDuringBuilds: true,
   },
