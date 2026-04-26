@@ -96,6 +96,18 @@ gcloud run deploy voxeraai \
 *(Note: Ensure your `.env.production` is NOT in your `.gitignore` so that public Firebase variables are correctly baked during the remote Cloud Build).*
 
 ---
+SS:
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 34 34 PM" src="https://github.com/user-attachments/assets/6871b657-8a45-4c56-8e90-79895385d72a" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 35 48 PM" src="https://github.com/user-attachments/assets/9adbd46f-b585-433c-8ec3-02006d34c9c4" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 34 47 PM" src="https://github.com/user-attachments/assets/8961b204-b00b-4263-b1ae-ea831488a8e2" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 34 52 PM" src="https://github.com/user-attachments/assets/d01bce28-65b7-43d8-a686-c9265ea3bf53" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 35 15 PM" src="https://github.com/user-attachments/assets/6bd69c4b-077f-4183-bd2b-fab10925364e" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 35 25 PM" src="https://github.com/user-attachments/assets/70ad593e-3605-43d8-853e-a048e11f06a9" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 35 22 PM" src="https://github.com/user-attachments/assets/9d2f353c-be18-40a2-96ca-0a5bf34cdee5" />
+<img width="1470" height="956" alt="Screenshot 2026-04-26 at 11 35 37 PM" src="https://github.com/user-attachments/assets/53d729a5-4f93-446a-b8bf-27aaf424ff77" />
+
+
+
 
 ## 📜 License
 
