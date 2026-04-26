@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { getFirebaseDb } from "@/lib/firebase";
 import { apiLimiter } from "@/lib/rate-limit";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -7,6 +7,41 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 export const runtime = "nodejs";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? "");
+
+const articleSchema = {
+  description: "A civic education article structure",
+  type: SchemaType.OBJECT,
+  properties: {
+    title: { type: SchemaType.STRING },
+    sections: {
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.OBJECT,
+        properties: {
+          heading: { type: SchemaType.STRING },
+          content: { type: SchemaType.STRING, description: "Markdown formatted content for this section" }
+        },
+        required: ["heading", "content"]
+      }
+    },
+    keyTakeaways: {
+      type: SchemaType.ARRAY,
+      items: { type: SchemaType.STRING }
+    },
+    officialSources: {
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.OBJECT,
+        properties: {
+          title: { type: SchemaType.STRING },
+          url: { type: SchemaType.STRING }
+        },
+        required: ["title", "url"]
+      }
+    }
+  },
+  required: ["title", "sections", "keyTakeaways", "officialSources"]
+};
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") || "unknown";
@@ -38,13 +73,13 @@ export async function POST(req: NextRequest) {
     // ── 2. Generate with Gemini ──────────────────────────────
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: articleSchema,
+      },
       systemInstruction: `You are a civic education content writer for VoxeraAI, an app that helps Indian citizens understand elections and democracy.
 Write detailed, accurate, factual articles about Indian elections and civic processes.
 Always cite official Indian government sources (eci.gov.in, sansad.in, panchayat.gov.in, etc.).
-Format articles using markdown: use # for the title, ## for sections, ### for subsections.
-Include bullet points, numbered lists, bold text for key terms, and blockquotes for official quotes.
-Add a "📌 Key Takeaways" section at the end with 3–5 bullet points.
-Add a "🔗 Official Sources" section at the very end with relevant government URLs.
 Be completely non-partisan. Do not endorse any political party or candidate.
 Write in clear, accessible English appropriate for Indian voters of all education levels.
 Aim for 600–900 words of substantive content.`,
@@ -54,10 +89,37 @@ Aim for 600–900 words of substantive content.`,
       `Write a civic education article for Indian voters.\n\nTitle: ${title}\n\n${contentPrompt}`
     );
 
-    const markdown = result.response.text();
-
-    if (!markdown) {
+    const jsonText = result.response.text();
+    if (!jsonText) {
       return NextResponse.json({ error: "Failed to generate article content" }, { status: 500 });
+    }
+
+    const articleData = JSON.parse(jsonText) as {
+      title: string;
+      sections: { heading: string; content: string }[];
+      keyTakeaways: string[];
+      officialSources: { title: string; url: string }[];
+    };
+
+    let markdown = `# ${articleData.title}\n\n`;
+    for (const section of articleData.sections) {
+      markdown += `## ${section.heading}\n\n${section.content}\n\n`;
+    }
+    
+    if (articleData.keyTakeaways && articleData.keyTakeaways.length > 0) {
+      markdown += `## 📌 Key Takeaways\n\n`;
+      for (const takeaway of articleData.keyTakeaways) {
+        markdown += `- ${takeaway}\n`;
+      }
+      markdown += `\n`;
+    }
+
+    if (articleData.officialSources && articleData.officialSources.length > 0) {
+      markdown += `## 🔗 Official Sources\n\n`;
+      for (const source of articleData.officialSources) {
+        markdown += `- [${source.title}](${source.url})\n`;
+      }
+      markdown += `\n`;
     }
 
     // ── 3. Cache in Firestore ────────────────────────────────

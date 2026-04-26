@@ -87,7 +87,7 @@ export default function AssistantPage() {
         <aside className="w-72 hidden lg:flex flex-col border-r border-white/[0.06] p-4 gap-4">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-[#8899BB] uppercase tracking-widest">Chats</h2>
-            <button className="badge badge-amber cursor-pointer" onClick={() => setMessages([{id:"welcome",role:"assistant",content:"👋 Hi! Ask me anything about Indian elections.",timestamp:new Date()}])}>+ New</button>
+            <button className="badge badge-amber cursor-pointer" onClick={() => setMessages([{id:"welcome",role:"assistant",content:"👋 Hi! Ask me anything about Indian elections.",timestamp:new Date()}])} aria-label="Start new chat">+ New</button>
           </div>
           <div className="p-3 rounded-xl bg-[#F5A623]/10 border border-[#F5A623]/20">
             <p className="text-sm text-white truncate">Current conversation</p>

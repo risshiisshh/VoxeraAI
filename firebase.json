@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".next",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -9,33 +9,11 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "**/*.@(js|css|woff2)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public,max-age=31536000,immutable"
-          }
-        ]
+        "run": {
+          "serviceId": "voxeraai",
+          "region": "asia-south1"
+        }
       }
     ]
-  },
-  "firestore": {
-    "database": "(default)",
-    "location": "nam5",
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "auth": {
-    "providers": {
-      "googleSignIn": {
-        "oAuthBrandDisplayName": "ElectIQ",
-        "supportEmail": "rishabhshevde@gmail.com"
-      }
-    }
   }
 }

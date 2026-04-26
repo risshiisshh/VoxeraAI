@@ -59,6 +59,8 @@ export default function Navbar() {
                     <button
                       onClick={() => setProfileOpen(!profileOpen)}
                       className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                      aria-label="User profile menu"
+                      aria-expanded={profileOpen}
                     >
                       {user.photoURL ? (
                         <Image src={user.photoURL} alt={user.displayName ?? "User"} width={32} height={32} className="w-8 h-8 rounded-full object-cover border border-white/20" />

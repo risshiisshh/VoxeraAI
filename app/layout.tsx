@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -42,6 +44,7 @@ export default function RootLayout({
       <body className="min-h-dvh flex flex-col antialiased">
         <Navbar />
         <main className="flex-1 relative z-[1]">{children}</main>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX"} />
       </body>
     </html>
   );

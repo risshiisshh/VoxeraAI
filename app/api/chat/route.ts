@@ -15,12 +15,22 @@ export async function POST(req: NextRequest) {
       messages: Array<{ role: "user" | "assistant"; content: string }>;
     };
 
-    if (!messages?.length) {
-      return NextResponse.json({ error: "No messages provided" }, { status: 400 });
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return NextResponse.json({ error: "Invalid or empty messages provided" }, { status: 400 });
+    }
+
+    // Sanitize and validate messages
+    const sanitizedMessages = messages.map(m => ({
+      role: m.role,
+      content: typeof m.content === "string" ? m.content.substring(0, 4000) : "",
+    })).filter(m => m.content.length > 0);
+
+    if (sanitizedMessages.length === 0) {
+      return NextResponse.json({ error: "No valid text content found" }, { status: 400 });
     }
 
     // Convert to Gemini format (exclude last user message — that's the live prompt)
-    const rawHistory = messages.slice(0, -1).map((m) => ({
+    const rawHistory = sanitizedMessages.slice(0, -1).map((m) => ({
       role: m.role === "assistant" ? ("model" as const) : ("user" as const),
       parts: [{ text: m.content }],
     }));
@@ -30,7 +40,7 @@ export async function POST(req: NextRequest) {
     const firstUserIdx = rawHistory.findIndex((m) => m.role === "user");
     const history = firstUserIdx >= 0 ? rawHistory.slice(firstUserIdx) : [];
 
-    const lastMessage = messages[messages.length - 1].content;
+    const lastMessage = sanitizedMessages[sanitizedMessages.length - 1].content;
 
     const stream = await streamCivicChat(history, lastMessage);
 
