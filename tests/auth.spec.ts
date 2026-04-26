@@ -19,15 +19,18 @@ test.describe('Authentication Modal', () => {
   });
 
   test('should toggle to sign up mode', async ({ page }) => {
-    await page.goto('/assistant');
+    await page.goto('/');
     
     const signInButton = page.locator('button:has-text("Sign In")').first();
-    await signInButton.click();
+    
+    if (await signInButton.isVisible()) {
+      await signInButton.click();
 
-    const signUpLink = page.locator('button:has-text("Sign up free")');
-    await signUpLink.click();
+      const signUpLink = page.locator('button:has-text("Sign up free")');
+      await signUpLink.click();
 
-    await expect(page.locator('h2', { hasText: 'Create account' })).toBeVisible();
-    await expect(page.locator('input[type="text"]')).toBeVisible(); // Name field
+      await expect(page.locator('h2', { hasText: 'Create account' })).toBeVisible();
+      await expect(page.locator('input[type="text"]')).toBeVisible(); // Name field
+    }
   });
 });

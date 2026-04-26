@@ -15,5 +15,5 @@ test('navigation links work correctly', async ({ page }) => {
 
 test('assistant page loads without crashing', async ({ page }) => {
   await page.goto('/assistant');
-  await expect(page.locator('text=VoxeraAI Assistant')).toBeVisible();
+  await expect(page.locator('text=VoxeraAI Assistant').first()).toBeVisible();
 });

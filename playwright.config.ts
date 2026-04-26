@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3005',
     trace: 'on-first-retry',
   },
   projects: [
@@ -18,8 +18,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run start',
-    url: 'http://localhost:3000',
+    command: 'PORT=3005 node .next/standalone/server.js',
+    url: 'http://localhost:3005',
     reuseExistingServer: !process.env.CI,
   },
 });
