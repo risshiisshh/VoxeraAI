@@ -20,6 +20,11 @@ function GoogleIcon() {
   );
 }
 
+/** Minimal shape of a Firebase Auth error */
+interface FirebaseError {
+  code?: string;
+}
+
 function emailToFirebaseError(code: string): string {
   switch (code) {
     case "auth/email-already-in-use":    return "This email is already registered. Sign in instead.";
@@ -89,9 +94,9 @@ export default function AuthModal({ onClose }: Props) {
     try {
       await signInWithGoogle();
       onClose();
-    } catch (e: any) {
-      console.error(e);
-      setError(emailToFirebaseError(e.code ?? "") + (e.message ? ` [${e.message}]` : ""));
+    } catch (e: unknown) {
+      const err = e as FirebaseError;
+      setError(emailToFirebaseError(err.code ?? ""));
     } finally { setBusy(false); }
   }
 
@@ -106,9 +111,9 @@ export default function AuthModal({ onClose }: Props) {
         await signInWithEmail(email, password);
       }
       onClose();
-    } catch (e: any) {
-      console.error(e);
-      setError(emailToFirebaseError(e.code ?? "") + (e.message ? ` [${e.message}]` : ""));
+    } catch (e: unknown) {
+      const err = e as FirebaseError;
+      setError(emailToFirebaseError(err.code ?? ""));
     } finally { setBusy(false); }
   }
 
@@ -118,9 +123,9 @@ export default function AuthModal({ onClose }: Props) {
     try {
       await resetPassword(email);
       setResetSent(true);
-    } catch (e: any) {
-      console.error(e);
-      setError(emailToFirebaseError(e.code ?? "") + (e.message ? ` [${e.message}]` : ""));
+    } catch (e: unknown) {
+      const err = e as FirebaseError;
+      setError(emailToFirebaseError(err.code ?? ""));
     } finally { setBusy(false); }
   }
 

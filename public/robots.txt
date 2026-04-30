@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://voxeraai-965293624421.asia-south1.run.app/sitemap.xml
