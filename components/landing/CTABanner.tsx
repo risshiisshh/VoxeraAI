@@ -29,7 +29,7 @@ export default function CTABanner() {
               <br />
               <span className="text-gradient">superpower</span>
             </h2>
-            <p className="text-[#8899BB] text-xl max-w-2xl mx-auto mb-10">
+            <p className="text-[#B0C0DF] text-xl max-w-2xl mx-auto mb-10">
               Join thousands of citizens who use VoxeraAI to stay informed,
               understand their rights, and participate in democracy.
             </p>

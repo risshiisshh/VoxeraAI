@@ -20,12 +20,12 @@ export default function TimelinePage() {
             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mt-2">
               {ELECTION_INFO.name}
             </h1>
-            <p className="text-[#8899BB] mt-3 text-lg">{ELECTION_INFO.date}</p>
+            <p className="text-[#B0C0DF] mt-3 text-lg">{ELECTION_INFO.date}</p>
 
             {/* Progress bar */}
             <div className="mt-8 max-w-xl">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-[#8899BB]">Your progress</span>
+                <span className="text-sm text-[#B0C0DF]">Your progress</span>
                 <span className="text-sm font-bold text-[#F5A623]">{progress}%</span>
               </div>
               <div className="h-2 rounded-full bg-white/10 overflow-hidden">
@@ -55,13 +55,13 @@ export default function TimelinePage() {
                       ? "bg-[#22C55E] text-white"
                       : step.status === "active"
                       ? "bg-[#F5A623] text-[#0A1628] animate-glow-pulse"
-                      : "bg-[#162444] border border-white/20 text-[#4A5A7A]"
+                      : "bg-[#162444] border border-white/20 text-[#8A9BB8]"
                   }`}
                 >
                   {step.status === "completed" ? "✓" : step.icon}
                 </div>
                 <span className={`text-xs font-semibold text-center max-w-[80px] ${
-                  step.status === "active" ? "text-[#F5A623]" : "text-[#8899BB]"
+                  step.status === "active" ? "text-[#F5A623]" : "text-[#B0C0DF]"
                 }`}>
                   {step.title}
                 </span>
@@ -86,7 +86,7 @@ export default function TimelinePage() {
                         ? "bg-[#22C55E]/20 text-[#22C55E]"
                         : step.status === "active"
                         ? "bg-[#F5A623]/20 text-[#F5A623]"
-                        : "bg-white/[0.04] text-[#4A5A7A]"
+                        : "bg-white/[0.04] text-[#8A9BB8]"
                     }`}
                   >
                     {step.icon}
@@ -94,7 +94,7 @@ export default function TimelinePage() {
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 flex-wrap mb-1">
-                      <span className="text-xs text-[#4A5A7A] uppercase tracking-widest">Step {i + 1}</span>
+                      <span className="text-xs text-[#8A9BB8] uppercase tracking-widest">Step {i + 1}</span>
                       {step.status === "active" && (
                         <span className="badge badge-amber">
                           <span className="live-dot mr-1" aria-hidden="true" />
@@ -106,13 +106,13 @@ export default function TimelinePage() {
                       )}
                     </div>
                     <h2 className="text-xl font-bold text-white mb-1">{step.title}</h2>
-                    <p className="text-[#8899BB] text-sm mb-1">{step.date}</p>
-                    <p className="text-[#8899BB] mb-4">{step.description}</p>
+                    <p className="text-[#B0C0DF] text-sm mb-1">{step.date}</p>
+                    <p className="text-[#B0C0DF] mb-4">{step.description}</p>
 
                     {step.details && (
                       <ul className="space-y-2">
                         {step.details.map((d, j) => (
-                          <li key={j} className="flex items-start gap-2 text-sm text-[#8899BB]">
+                          <li key={j} className="flex items-start gap-2 text-sm text-[#B0C0DF]">
                             <span className="text-[#F5A623] mt-0.5 flex-shrink-0">→</span>
                             {d}
                           </li>

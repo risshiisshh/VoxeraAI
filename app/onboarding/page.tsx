@@ -68,7 +68,7 @@ export default function OnboardingPage() {
                       ? "bg-[#22C55E] text-white"
                       : n === step
                       ? "bg-[#F5A623] text-[#0A1628]"
-                      : "bg-white/10 text-[#4A5A7A]"
+                      : "bg-white/10 text-[#8A9BB8]"
                   }`}
                   aria-current={n === step ? "step" : undefined}
                 >
@@ -88,11 +88,11 @@ export default function OnboardingPage() {
           {step === 1 && (
             <div className="card p-8 animate-fade-up">
               <h1 className="text-3xl font-extrabold text-white mb-2">Where are you voting?</h1>
-              <p className="text-[#8899BB] mb-8">We use this to personalise election info for your state.</p>
+              <p className="text-[#B0C0DF] mb-8">We use this to personalise election info for your state.</p>
 
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="country" className="text-sm font-medium text-[#8899BB] block mb-1.5">Country</label>
+                  <label htmlFor="country" className="text-sm font-medium text-[#B0C0DF] block mb-1.5">Country</label>
                   <input
                     id="country"
                     className="input-base"
@@ -101,7 +101,7 @@ export default function OnboardingPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="state" className="text-sm font-medium text-[#8899BB] block mb-1.5">State</label>
+                  <label htmlFor="state" className="text-sm font-medium text-[#B0C0DF] block mb-1.5">State</label>
                   <select
                     id="state"
                     className="input-base"
@@ -130,7 +130,7 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="card p-8 animate-fade-up">
               <h2 className="text-3xl font-extrabold text-white mb-2">How do you describe yourself?</h2>
-              <p className="text-[#8899BB] mb-8">This helps us tailor the experience to your needs.</p>
+              <p className="text-[#B0C0DF] mb-8">This helps us tailor the experience to your needs.</p>
 
               <div className="space-y-4">
                 {ROLES.map((role) => (
@@ -149,7 +149,7 @@ export default function OnboardingPage() {
                       <span className="text-3xl">{role.icon}</span>
                       <div>
                         <div className="font-bold text-white">{role.label}</div>
-                        <div className="text-sm text-[#8899BB] mt-0.5">{role.description}</div>
+                        <div className="text-sm text-[#B0C0DF] mt-0.5">{role.description}</div>
                       </div>
                       {data.role === role.id && (
                         <div className="ml-auto w-5 h-5 rounded-full bg-[#F5A623] flex items-center justify-center text-[#0A1628] text-xs">✓</div>
@@ -170,7 +170,7 @@ export default function OnboardingPage() {
           {step === 3 && (
             <div className="card p-8 animate-fade-up">
               <h2 className="text-3xl font-extrabold text-white mb-2">What are your goals?</h2>
-              <p className="text-[#8899BB] mb-8">Select all that apply — we&apos;ll surface the most relevant content.</p>
+              <p className="text-[#B0C0DF] mb-8">Select all that apply — we&apos;ll surface the most relevant content.</p>
 
               <div className="grid grid-cols-2 gap-3">
                 {ONBOARDING_GOALS.map((g) => (
@@ -181,7 +181,7 @@ export default function OnboardingPage() {
                     className={`p-4 rounded-2xl border text-left text-sm transition-all ${
                       data.goals.includes(g.id)
                         ? "border-[#F5A623]/50 bg-[#F5A623]/10 text-[#F5A623]"
-                        : "border-white/[0.08] text-[#8899BB] hover:border-white/20 hover:text-white"
+                        : "border-white/[0.08] text-[#B0C0DF] hover:border-white/20 hover:text-white"
                     }`}
                     aria-pressed={data.goals.includes(g.id)}
                   >

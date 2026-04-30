@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 
-
 const nextConfig: NextConfig = {
   output: "standalone",
   outputFileTracingRoot: __dirname,
@@ -35,14 +34,32 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
           },
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+          {
+            // CSP: allow Google fonts, Firebase, Gemini, and Google Maps
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.googleapis.com https://*.googletagmanager.com https://*.google-analytics.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: https: blob:",
+              "frame-src https://maps.google.com https://www.google.com",
+              "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebase.io https://firestore.googleapis.com https://*.google-analytics.com wss://*.firebaseio.com",
+              "worker-src 'self' blob:",
+            ].join("; "),
+          },
         ],
       },
     ];
   },
-  // @ts-expect-error NextConfig types might not explicitly include eslint in older/current versions
   eslint: {
     ignoreDuringBuilds: true,
   },
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
 
 export default nextConfig;

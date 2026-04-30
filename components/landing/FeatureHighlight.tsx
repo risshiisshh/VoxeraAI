@@ -27,7 +27,7 @@ export default function FeatureHighlight() {
               <br />
               <span className="text-gradient">vote with confidence</span>
             </h2>
-            <p className="text-[#8899BB] text-lg leading-relaxed mb-8">
+            <p className="text-[#B0C0DF] text-lg leading-relaxed mb-8">
               VoxeraAI combines AI technology with verified civic data to give you
               a complete civic education platform — no textbooks required.
             </p>
@@ -39,7 +39,7 @@ export default function FeatureHighlight() {
                 >
                   <div className="text-2xl mb-2">{f.icon}</div>
                   <div className="text-sm font-semibold text-white mb-1">{f.title}</div>
-                  <div className="text-xs text-[#8899BB] leading-relaxed">{f.description}</div>
+                  <div className="text-xs text-[#B0C0DF] leading-relaxed">{f.description}</div>
                 </div>
               ))}
             </div>
@@ -69,17 +69,17 @@ export default function FeatureHighlight() {
                       ? "bg-[#22C55E] text-white"
                       : item.active
                       ? "bg-[#F5A623] text-[#0A1628] animate-glow-pulse"
-                      : "border border-white/20 text-[#4A5A7A]"
+                      : "border border-white/20 text-[#8A9BB8]"
                   }`}
                 >
                   {item.done ? "✓" : i + 1}
                 </div>
                 <div className="flex-1">
-                  <div className={`text-sm font-medium ${item.active ? "text-[#F5A623]" : item.done ? "text-[#8899BB] line-through" : "text-white"}`}>
+                  <div className={`text-sm font-medium ${item.active ? "text-[#F5A623]" : item.done ? "text-[#B0C0DF] line-through" : "text-white"}`}>
                     {item.label}
                   </div>
                 </div>
-                <div className="text-xs text-[#4A5A7A]">{item.date}</div>
+                <div className="text-xs text-[#8A9BB8]">{item.date}</div>
               </div>
             ))}
           </div>

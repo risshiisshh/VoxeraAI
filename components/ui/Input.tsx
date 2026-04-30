@@ -11,13 +11,13 @@ export default function Input({ label, error, icon, className = "", id, ...rest 
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label htmlFor={inputId} className="text-sm font-medium text-[#8899BB]">
+        <label htmlFor={inputId} className="text-sm font-medium text-[#B0C0DF]">
           {label}
         </label>
       )}
       <div className="relative">
         {icon && (
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#4A5A7A]">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A9BB8]">
             {icon}
           </span>
         )}

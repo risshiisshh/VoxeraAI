@@ -54,7 +54,7 @@ export default function BoothsPage() {
             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mt-2 mb-4">
               Find Your Voting Booth
             </h1>
-            <p className="text-[#8899BB] text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-[#B0C0DF] text-lg max-w-2xl mx-auto mb-8">
               Locate polling stations across India. Search by city, constituency, or PIN code — then verify at{" "}
               <a
                 href="https://voters.eci.gov.in"
@@ -69,7 +69,7 @@ export default function BoothsPage() {
 
             {/* Search bar */}
             <div className="max-w-xl mx-auto relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4A5A7A] text-lg pointer-events-none">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A9BB8] text-lg pointer-events-none">
                 🔍
               </span>
               <input
@@ -98,7 +98,7 @@ export default function BoothsPage() {
             {/* Sidebar — city list */}
             <aside className="w-full lg:w-72 flex-shrink-0">
               <div className="card p-4">
-                <h2 className="text-sm font-semibold text-[#8899BB] uppercase tracking-widest mb-4">
+                <h2 className="text-sm font-semibold text-[#B0C0DF] uppercase tracking-widest mb-4">
                   Major Cities
                 </h2>
                 <ul className="space-y-1 max-h-[420px] overflow-y-auto">
@@ -114,23 +114,23 @@ export default function BoothsPage() {
                         className={`w-full text-left px-4 py-3 rounded-xl transition-all flex items-center justify-between group ${
                           selected.name === city.name && mapMode === "city"
                             ? "bg-[#F5A623]/10 border border-[#F5A623]/30 text-[#F5A623]"
-                            : "hover:bg-white/[0.04] text-[#8899BB] hover:text-white"
+                            : "hover:bg-white/[0.04] text-[#B0C0DF] hover:text-white"
                         }`}
                       >
                         <div>
                           <p className="font-semibold text-sm leading-tight">
                             {city.name}
                           </p>
-                          <p className="text-xs text-[#4A5A7A] mt-0.5">{city.state}</p>
+                          <p className="text-xs text-[#8A9BB8] mt-0.5">{city.state}</p>
                         </div>
-                        <span className="text-xs text-[#4A5A7A] group-hover:text-[#8899BB] transition-colors">
+                        <span className="text-xs text-[#8A9BB8] group-hover:text-[#B0C0DF] transition-colors">
                           {city.booths} booths
                         </span>
                       </button>
                     </li>
                   ))}
                   {search.trim() && filtered.length === 0 && (
-                    <li className="text-center py-6 text-[#4A5A7A] text-sm">
+                    <li className="text-center py-6 text-[#8A9BB8] text-sm">
                       No cities matched. Try the search button to look up on maps.
                     </li>
                   )}
@@ -146,7 +146,7 @@ export default function BoothsPage() {
                   <span className="text-xl">🏛️</span>
                   <span className="font-semibold text-white text-sm">Official ECI Locator</span>
                 </div>
-                <p className="text-xs text-[#8899BB] mb-4 leading-relaxed">
+                <p className="text-xs text-[#B0C0DF] mb-4 leading-relaxed">
                   Find your exact booth, polling officer details, and voter slip on the Election Commission of India website.
                 </p>
                 <a
@@ -161,7 +161,7 @@ export default function BoothsPage() {
                   href="https://play.google.com/store/apps/details?id=com.eci.citizen"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-ghost w-full text-sm py-2 text-center block mt-2 text-[#8899BB]"
+                  className="btn-ghost w-full text-sm py-2 text-center block mt-2 text-[#B0C0DF]"
                 >
                   📱 Download Voter Helpline App
                 </a>
@@ -180,14 +180,14 @@ export default function BoothsPage() {
                         : `${selected.name}, ${selected.state}`}
                     </p>
                     {mapMode === "city" && (
-                      <p className="text-xs text-[#4A5A7A] mt-0.5">
+                      <p className="text-xs text-[#8A9BB8] mt-0.5">
                         Approx. {selected.booths} polling stations
                       </p>
                     )}
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="live-dot" />
-                    <span className="text-xs text-[#8899BB]">Google Maps</span>
+                    <span className="text-xs text-[#B0C0DF]">Google Maps</span>
                   </div>
                 </div>
 
@@ -244,7 +244,7 @@ export default function BoothsPage() {
               >
                 <div className="text-3xl">{card.icon}</div>
                 <h3 className="font-bold text-white">{card.title}</h3>
-                <p className="text-sm text-[#8899BB] leading-relaxed flex-1">{card.desc}</p>
+                <p className="text-sm text-[#B0C0DF] leading-relaxed flex-1">{card.desc}</p>
                 <a
                   href={card.href}
                   target="_blank"

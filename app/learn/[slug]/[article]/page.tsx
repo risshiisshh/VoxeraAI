@@ -153,7 +153,7 @@ export default function ArticlePage() {
                   {guide.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-[#4A5A7A]">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-[#8A9BB8]">
                   <span>{guide.readTime} min read</span>
                   <span>·</span>
                   <span>{new Date(guide.publishedAt).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
@@ -172,7 +172,7 @@ export default function ArticlePage() {
                   )}
                 </div>
 
-                <p className="text-[#8899BB] text-lg leading-relaxed mt-4 border-l-4 border-[#F5A623]/40 pl-4">
+                <p className="text-[#B0C0DF] text-lg leading-relaxed mt-4 border-l-4 border-[#F5A623]/40 pl-4">
                   {guide.excerpt}
                 </p>
               </header>
@@ -183,7 +183,7 @@ export default function ArticlePage() {
                 {error && !generating && (
                   <div className="text-center py-12">
                     <div className="text-4xl mb-4" aria-hidden="true">⚠️</div>
-                    <p className="text-[#8899BB] mb-6">{error}</p>
+                    <p className="text-[#B0C0DF] mb-6">{error}</p>
                     <button
                       onClick={() => {
                         alreadyFetched.current = false;
@@ -268,7 +268,7 @@ export default function ArticlePage() {
             {headings.length > 0 && (
               <aside className="hidden xl:block w-56 flex-shrink-0 sticky top-28 self-start" aria-label="Table of contents">
                 <div className="card p-4">
-                  <p className="text-xs font-bold text-[#4A5A7A] uppercase tracking-widest mb-3">In This Article</p>
+                  <p className="text-xs font-bold text-[#8A9BB8] uppercase tracking-widest mb-3">In This Article</p>
                   <nav>
                     <ul className="space-y-1">
                       {headings.map((h) => (

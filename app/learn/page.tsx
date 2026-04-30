@@ -49,7 +49,7 @@ export default function LearnPage() {
               <br />
               <span className="text-gradient">made simple</span>
             </h1>
-            <p className="text-[#8899BB] mt-4 text-lg max-w-xl">
+            <p className="text-[#B0C0DF] mt-4 text-lg max-w-xl">
               Explore guides, explainers, and quizzes on every aspect of Indian democracy and elections.
             </p>
 
@@ -62,14 +62,14 @@ export default function LearnPage() {
               ].map(({ value, label }) => (
                 <div key={label} className="flex items-baseline gap-1.5">
                   <span className="text-2xl font-extrabold text-[#F5A623]">{value}</span>
-                  <span className="text-sm text-[#4A5A7A]">{label}</span>
+                  <span className="text-sm text-[#8A9BB8]">{label}</span>
                 </div>
               ))}
             </div>
 
             {/* Search */}
             <div className="mt-6 relative max-w-md">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#4A5A7A]" aria-hidden="true">🔍</span>
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8A9BB8]" aria-hidden="true">🔍</span>
               <input
                 id="learn-search"
                 type="search"
@@ -82,7 +82,7 @@ export default function LearnPage() {
               {query && (
                 <button
                   onClick={() => setQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#4A5A7A] hover:text-white transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8A9BB8] hover:text-white transition-colors"
                   aria-label="Clear search"
                 >
                   ✕
@@ -94,7 +94,7 @@ export default function LearnPage() {
           {/* Featured article (only shown when not searching) */}
           {!query && (
             <div className="mb-12 animate-fade-up stagger-1">
-              <h2 className="text-sm font-bold text-[#4A5A7A] uppercase tracking-widest mb-4">Featured Guide</h2>
+              <h2 className="text-sm font-bold text-[#8A9BB8] uppercase tracking-widest mb-4">Featured Guide</h2>
               <Link
                 href={`/learn/${featured.topicSlug}/${featured.slug}`}
                 className="card p-6 md:p-8 flex flex-col md:flex-row gap-6 no-underline group card-active"
@@ -115,9 +115,9 @@ export default function LearnPage() {
                   <h3 className="text-xl font-bold text-white group-hover:text-[#F5A623] transition-colors mb-2">
                     {featured.title}
                   </h3>
-                  <p className="text-[#8899BB] leading-relaxed line-clamp-2">{featured.excerpt}</p>
+                  <p className="text-[#B0C0DF] leading-relaxed line-clamp-2">{featured.excerpt}</p>
                   <div className="flex items-center gap-3 mt-4">
-                    <span className="text-xs text-[#4A5A7A]">{featured.readTime} min read</span>
+                    <span className="text-xs text-[#8A9BB8]">{featured.readTime} min read</span>
                     <span className="text-xs text-[#F5A623] group-hover:translate-x-1 transition-transform inline-block">
                       Read Now →
                     </span>
@@ -152,10 +152,10 @@ export default function LearnPage() {
                       <h3 className="font-bold text-white group-hover:text-[#F5A623] transition-colors">
                         {topic.title}
                       </h3>
-                      <p className="text-sm text-[#8899BB] mt-1 leading-relaxed">{topic.description}</p>
+                      <p className="text-sm text-[#B0C0DF] mt-1 leading-relaxed">{topic.description}</p>
                     </div>
                     <div className="flex items-center justify-between mt-auto pt-3 border-t border-white/[0.06]">
-                      <span className="text-xs text-[#4A5A7A]">{topic.articleCount} articles</span>
+                      <span className="text-xs text-[#8A9BB8]">{topic.articleCount} articles</span>
                       <span className="text-xs text-[#F5A623] group-hover:translate-x-1 transition-transform inline-block">
                         Explore →
                       </span>
@@ -197,11 +197,11 @@ export default function LearnPage() {
                       <h3 className="font-bold text-white group-hover:text-[#F5A623] transition-colors mb-1">
                         {guide.title}
                       </h3>
-                      <p className="text-sm text-[#8899BB] leading-relaxed line-clamp-2">{guide.excerpt}</p>
+                      <p className="text-sm text-[#B0C0DF] leading-relaxed line-clamp-2">{guide.excerpt}</p>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <p className="text-xs text-[#4A5A7A]">{guide.readTime} min read</p>
-                      <p className="text-xs text-[#4A5A7A] mt-1">
+                      <p className="text-xs text-[#8A9BB8]">{guide.readTime} min read</p>
+                      <p className="text-xs text-[#8A9BB8] mt-1">
                         {new Date(guide.publishedAt).toLocaleDateString("en-IN", { month: "short", day: "numeric" })}
                       </p>
                     </div>
@@ -216,7 +216,7 @@ export default function LearnPage() {
             <div className="text-center py-20">
               <div className="text-5xl mb-4" aria-hidden="true">🔍</div>
               <p className="text-white font-bold text-xl mb-2">No results for &ldquo;{query}&rdquo;</p>
-              <p className="text-[#8899BB] mb-6">Try searching for &quot;EVM&quot;, &quot;registration&quot;, &quot;voter rights&quot;, or &quot;Panchayat&quot;</p>
+              <p className="text-[#B0C0DF] mb-6">Try searching for &quot;EVM&quot;, &quot;registration&quot;, &quot;voter rights&quot;, or &quot;Panchayat&quot;</p>
               <button onClick={() => setQuery("")} className="btn-secondary">Clear Search</button>
             </div>
           )}
@@ -239,7 +239,7 @@ export default function LearnPage() {
               <div className="relative z-10">
                 <div className="text-4xl mb-4" aria-hidden="true">🧠</div>
                 <h2 className="text-3xl font-extrabold text-white mb-3">Test your civic knowledge</h2>
-                <p className="text-[#8899BB] mb-6 max-w-md mx-auto">
+                <p className="text-[#B0C0DF] mb-6 max-w-md mx-auto">
                   Take a quick quiz to see how much you know about Indian elections — and discover what to learn next.
                 </p>
                 <Link

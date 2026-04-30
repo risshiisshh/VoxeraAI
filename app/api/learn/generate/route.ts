@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, type Schema } from "@google/generative-ai";
 import { getFirebaseDb } from "@/lib/firebase";
 import { apiLimiter } from "@/lib/rate-limit";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -19,14 +19,17 @@ const articleSchema: Schema = {
         type: SchemaType.OBJECT,
         properties: {
           heading: { type: SchemaType.STRING },
-          content: { type: SchemaType.STRING, description: "Markdown formatted content for this section" }
+          content: {
+            type: SchemaType.STRING,
+            description: "Markdown formatted content for this section",
+          },
         },
-        required: ["heading", "content"]
-      }
+        required: ["heading", "content"],
+      },
     },
     keyTakeaways: {
       type: SchemaType.ARRAY,
-      items: { type: SchemaType.STRING }
+      items: { type: SchemaType.STRING },
     },
     officialSources: {
       type: SchemaType.ARRAY,
@@ -34,35 +37,40 @@ const articleSchema: Schema = {
         type: SchemaType.OBJECT,
         properties: {
           title: { type: SchemaType.STRING },
-          url: { type: SchemaType.STRING }
+          url: { type: SchemaType.STRING },
         },
-        required: ["title", "url"]
-      }
-    }
+        required: ["title", "url"],
+      },
+    },
   },
-  required: ["title", "sections", "keyTakeaways", "officialSources"]
+  required: ["title", "sections", "keyTakeaways", "officialSources"],
 };
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
   if (!apiLimiter.check(ip)) {
-    return NextResponse.json({ error: "Too many requests. Please wait a moment." }, { status: 429 });
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment." },
+      { status: 429 }
+    );
   }
 
   try {
-    const { guideId, contentPrompt, title } = (await req.json()) as {
+    const { guideId, contentPrompt, title, language = "English" } = (await req.json()) as {
       guideId: string;
       contentPrompt: string;
       title: string;
+      language?: string;
     };
 
     if (!guideId || !contentPrompt || !title) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // ── 1. Check Firestore cache ──────────────────────────────
+    // ── 1. Check Firestore cache (language-keyed so each language is cached separately)
     const db = getFirebaseDb();
-    const articleRef = doc(db, "articles", guideId);
+    const cacheKey = language === "English" ? guideId : `${guideId}-${language}`;
+    const articleRef = doc(db, "articles", cacheKey);
     const cached = await getDoc(articleRef);
 
     if (cached.exists()) {
@@ -70,7 +78,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ markdown: data.markdown, cached: true });
     }
 
-    // ── 2. Generate with Gemini ──────────────────────────────
+    // ── 2. Generate with Gemini (Structured JSON Output)
+    const languageInstruction =
+      language !== "English"
+        ? `\n\nIMPORTANT: Write the entire article in ${language}. All headings, content, takeaways, and source labels must be in ${language}.`
+        : "";
+
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash",
       generationConfig: {
@@ -81,8 +94,8 @@ export async function POST(req: NextRequest) {
 Write detailed, accurate, factual articles about Indian elections and civic processes.
 Always cite official Indian government sources (eci.gov.in, sansad.in, panchayat.gov.in, etc.).
 Be completely non-partisan. Do not endorse any political party or candidate.
-Write in clear, accessible English appropriate for Indian voters of all education levels.
-Aim for 600–900 words of substantive content.`,
+Write in clear, accessible language appropriate for Indian voters of all education levels.
+Aim for 600–900 words of substantive content.${languageInstruction}`,
     });
 
     const result = await model.generateContent(
@@ -101,20 +114,19 @@ Aim for 600–900 words of substantive content.`,
       officialSources: { title: string; url: string }[];
     };
 
+    // Build markdown from structured JSON
     let markdown = `# ${articleData.title}\n\n`;
     for (const section of articleData.sections) {
       markdown += `## ${section.heading}\n\n${section.content}\n\n`;
     }
-    
-    if (articleData.keyTakeaways && articleData.keyTakeaways.length > 0) {
+    if (articleData.keyTakeaways?.length > 0) {
       markdown += `## 📌 Key Takeaways\n\n`;
       for (const takeaway of articleData.keyTakeaways) {
         markdown += `- ${takeaway}\n`;
       }
       markdown += `\n`;
     }
-
-    if (articleData.officialSources && articleData.officialSources.length > 0) {
+    if (articleData.officialSources?.length > 0) {
       markdown += `## 🔗 Official Sources\n\n`;
       for (const source of articleData.officialSources) {
         markdown += `- [${source.title}](${source.url})\n`;
@@ -122,23 +134,22 @@ Aim for 600–900 words of substantive content.`,
       markdown += `\n`;
     }
 
-    // ── 3. Cache in Firestore ────────────────────────────────
+    // ── 3. Cache in Firestore (non-fatal)
     try {
       await setDoc(articleRef, {
         guideId,
+        language,
         markdown,
         generatedAt: new Date().toISOString(),
         source: "gemini-2.5-flash",
       });
     } catch (firestoreErr) {
-      // Cache failure is non-fatal — still return the content
       console.warn("Firestore cache write failed:", firestoreErr);
     }
 
     return NextResponse.json({ markdown, cached: false });
   } catch (err: unknown) {
     console.error("Learn generate API error:", err);
-
     if (err && typeof err === "object" && "status" in err) {
       const status = (err as { status: number }).status;
       if (status === 429) {
@@ -154,7 +165,6 @@ Aim for 600–900 words of substantive content.`,
         );
       }
     }
-
     return NextResponse.json({ error: "Failed to generate article content" }, { status: 500 });
   }
 }

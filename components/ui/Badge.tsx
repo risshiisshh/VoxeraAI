@@ -10,7 +10,7 @@ const variantMap: Record<Variant, string> = {
   amber:   "badge-amber",
   blue:    "badge-blue",
   success: "badge-success",
-  muted:   "badge text-[#4A5A7A] bg-white/[0.04]",
+  muted:   "badge text-[#8A9BB8] bg-white/[0.04]",
 };
 
 export default function Badge({ children, variant = "amber", className = "" }: BadgeProps) {

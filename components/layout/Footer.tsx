@@ -36,7 +36,7 @@ export default function Footer() {
                 Voxera<span className="text-gradient">AI</span>
               </span>
             </div>
-            <p className="text-sm text-[#8899BB] leading-relaxed max-w-xs">
+            <p className="text-sm text-[#B0C0DF] leading-relaxed max-w-xs">
               Know your vote. Own your voice. AI-powered civic education for every Indian citizen.
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(LINKS).map(([heading, items]) => (
             <div key={heading}>
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-[#4A5A7A] mb-4">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-[#8A9BB8] mb-4">
                 {heading}
               </h3>
               <ul className="space-y-3">
@@ -52,7 +52,7 @@ export default function Footer() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className="text-sm text-[#8899BB] hover:text-white transition-colors"
+                      className="text-sm text-[#B0C0DF] hover:text-white transition-colors"
                     >
                       {item.label}
                     </Link>
@@ -64,10 +64,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/[0.06] mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#4A5A7A]">
+          <p className="text-xs text-[#8A9BB8]">
             © {new Date().getFullYear()} VoxeraAI. All rights reserved.
           </p>
-          <p className="text-xs text-[#4A5A7A]">
+          <p className="text-xs text-[#8A9BB8]">
             Built with ❤ for democracy
           </p>
         </div>

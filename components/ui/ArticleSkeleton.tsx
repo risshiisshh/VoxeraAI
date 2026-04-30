@@ -69,7 +69,7 @@ export default function ArticleSkeleton() {
             />
           ))}
         </div>
-        <span className="text-sm text-[#4A5A7A]">Generating article with AI…</span>
+        <span className="text-sm text-[#8A9BB8]">Generating article with AI…</span>
       </div>
 
       <style jsx>{`

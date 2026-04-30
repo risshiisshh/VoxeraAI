@@ -41,7 +41,7 @@ export default function MarkdownRenderer({ markdown, className = "" }: Props) {
         parts.push(<strong key={key++} className="text-white font-semibold">{match[2]}</strong>);
       } else if (match[3]) {
         // Italic *text*
-        parts.push(<em key={key++} className="text-[#8899BB]">{match[4]}</em>);
+        parts.push(<em key={key++} className="text-[#B0C0DF]">{match[4]}</em>);
       } else if (match[5]) {
         // Code `text`
         parts.push(
@@ -128,7 +128,7 @@ export default function MarkdownRenderer({ markdown, className = "" }: Props) {
           className="border-l-4 border-[#F5A623] pl-4 py-2 my-4 bg-[#F5A623]/5 rounded-r-lg"
         >
           {quoteLines.map((ql, qi) => (
-            <p key={qi} className="text-[#8899BB] italic text-sm">{parseInline(ql)}</p>
+            <p key={qi} className="text-[#B0C0DF] italic text-sm">{parseInline(ql)}</p>
           ))}
         </blockquote>
       );
@@ -145,7 +145,7 @@ export default function MarkdownRenderer({ markdown, className = "" }: Props) {
       elements.push(
         <ul key={key++} className="space-y-2 my-4 ml-1">
           {items.map((item, ii) => (
-            <li key={ii} className="flex items-start gap-2 text-[#8899BB] leading-relaxed">
+            <li key={ii} className="flex items-start gap-2 text-[#B0C0DF] leading-relaxed">
               <span className="text-[#F5A623] mt-1 flex-shrink-0 text-xs">▸</span>
               <span>{parseInline(item)}</span>
             </li>
@@ -167,7 +167,7 @@ export default function MarkdownRenderer({ markdown, className = "" }: Props) {
       elements.push(
         <ol key={key++} className="space-y-2 my-4 ml-1">
           {items.map((item, ii) => (
-            <li key={ii} className="flex items-start gap-3 text-[#8899BB] leading-relaxed">
+            <li key={ii} className="flex items-start gap-3 text-[#B0C0DF] leading-relaxed">
               <span className="text-[#F5A623] font-bold flex-shrink-0 min-w-[1.5rem]">{ii + 1}.</span>
               <span>{parseInline(item)}</span>
             </li>
@@ -180,7 +180,7 @@ export default function MarkdownRenderer({ markdown, className = "" }: Props) {
 
     // Regular paragraph
     elements.push(
-      <p key={key++} className="text-[#8899BB] leading-relaxed my-3">
+      <p key={key++} className="text-[#B0C0DF] leading-relaxed my-3">
         {parseInline(line)}
       </p>
     );

@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useAuth } from "@/lib/hooks/useAuth";
 import AuthModal from "@/components/ui/AuthModal";
+import LanguageSelector from "@/components/ui/LanguageSelector";
 
 const NAV_LINKS = [
   { label: "How It Works", href: "/#how-it-works" },
@@ -19,12 +21,23 @@ export default function Navbar() {
   const [showAuth, setShowAuth] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
+  // Close profile dropdown on Escape
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape" && profileOpen) setProfileOpen(false);
+  }, [profileOpen]);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/[0.06]">
         <div className="section-container flex items-center justify-between h-16">
+
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group" aria-label="VoxeraAI home">
             <span
               className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-black"
               style={{ background: "linear-gradient(135deg,#F5A623,#D4891A)" }}
@@ -43,27 +56,40 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="text-sm font-medium text-[#8899BB] hover:text-white transition-colors"
+                className="text-sm font-medium text-[#B0C0DF] hover:text-white transition-colors"
+                aria-current={pathname === l.href ? "page" : undefined}
               >
                 {l.label}
               </Link>
             ))}
           </nav>
 
-          {/* Auth / CTA */}
-          <div className="flex items-center gap-3 relative">
+          {/* Right side: Language selector + Auth */}
+          <div className="flex items-center gap-2 relative">
+            {/* Language Selector — always visible */}
+            <LanguageSelector />
+
             {!loading && (
               <>
                 {user ? (
                   <div className="relative">
                     <button
-                      onClick={() => setProfileOpen(!profileOpen)}
+                      id="profile-menu-button"
+                      onClick={() => setProfileOpen((o) => !o)}
                       className="flex items-center gap-2 hover:opacity-80 transition-opacity"
                       aria-label="User profile menu"
                       aria-expanded={profileOpen}
+                      aria-haspopup="menu"
+                      aria-controls="profile-dropdown"
                     >
                       {user.photoURL ? (
-                        <Image src={user.photoURL} alt={user.displayName ?? "User"} width={32} height={32} className="w-8 h-8 rounded-full object-cover border border-white/20" />
+                        <Image
+                          src={user.photoURL}
+                          alt={user.displayName ?? "User avatar"}
+                          width={32}
+                          height={32}
+                          className="w-8 h-8 rounded-full object-cover border border-white/20"
+                        />
                       ) : (
                         <div className="w-8 h-8 rounded-full bg-[#F5A623] flex items-center justify-center text-[#0A1628] font-black text-sm">
                           {(user.displayName ?? user.email ?? "U").charAt(0).toUpperCase()}
@@ -73,21 +99,28 @@ export default function Navbar() {
 
                     {/* Profile Dropdown */}
                     {profileOpen && (
-                      <div className="absolute right-0 mt-2 w-48 card py-2 shadow-xl z-50 border border-white/[0.08]">
+                      <div
+                        id="profile-dropdown"
+                        role="menu"
+                        aria-labelledby="profile-menu-button"
+                        className="absolute right-0 mt-2 w-48 card py-2 shadow-xl z-50 border border-white/[0.08]"
+                      >
                         <div className="px-4 py-2 border-b border-white/[0.06] mb-2">
                           <p className="text-sm font-bold text-white truncate">{user.displayName}</p>
-                          <p className="text-xs text-[#8899BB] truncate">{user.email}</p>
+                          <p className="text-xs text-[#B0C0DF] truncate">{user.email}</p>
                         </div>
                         {pathname !== "/assistant" && (
                           <Link
                             href="/assistant"
+                            role="menuitem"
                             onClick={() => setProfileOpen(false)}
-                            className="block px-4 py-2 text-sm text-[#8899BB] hover:text-white hover:bg-white/[0.04]"
+                            className="block px-4 py-2 text-sm text-[#B0C0DF] hover:text-white hover:bg-white/[0.04]"
                           >
                             AI Assistant
                           </Link>
                         )}
                         <button
+                          role="menuitem"
                           onClick={() => { setProfileOpen(false); signOut(); }}
                           className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-white/[0.04] transition-colors"
                         >
@@ -99,8 +132,9 @@ export default function Navbar() {
                 ) : (
                   <>
                     <button
+                      id="nav-sign-in"
                       onClick={() => setShowAuth(true)}
-                      className="text-sm font-medium text-[#8899BB] hover:text-white transition-colors hidden sm:block"
+                      className="text-sm font-medium text-[#B0C0DF] hover:text-white transition-colors hidden sm:block"
                     >
                       Sign In
                     </button>
@@ -114,7 +148,7 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-      
+
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
     </>
   );

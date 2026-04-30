@@ -43,7 +43,7 @@ export default function Hero() {
           </h1>
 
           {/* Subheadline */}
-          <p className="animate-fade-up stagger-2 text-lg md:text-xl text-[#8899BB] leading-relaxed max-w-2xl mb-10">
+          <p className="animate-fade-up stagger-2 text-lg md:text-xl text-[#B0C0DF] leading-relaxed max-w-2xl mb-10">
             VoxeraAI makes civic participation clear and accessible. Ask any question
             about elections, candidates, or your voting rights — and get trustworthy,
             AI-powered answers in seconds.
@@ -73,7 +73,7 @@ export default function Hero() {
                 <div className="text-2xl md:text-3xl font-extrabold text-gradient">
                   {stat.value}
                 </div>
-                <div className="text-sm text-[#8899BB] mt-1">{stat.label}</div>
+                <div className="text-sm text-[#B0C0DF] mt-1">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -104,13 +104,13 @@ export default function Hero() {
                 <div className="w-6 h-6 rounded-full bg-[#F5A623]/20 flex items-center justify-center text-[#F5A623] text-xs flex-shrink-0 mt-0.5">
                   V
                 </div>
-                <div className="bg-[#162444] rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-[#8899BB] max-w-[85%]">
+                <div className="bg-[#162444] rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-[#B0C0DF] max-w-[85%]">
                   California&apos;s next primary election is in June 2026. Here&apos;s what you need to know to prepare…
                 </div>
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-white/[0.06]">
-              <div className="input-base text-sm text-[#4A5A7A] cursor-text">
+              <div className="input-base text-sm text-[#8A9BB8] cursor-text">
                 Ask anything about elections…
               </div>
             </div>

@@ -66,8 +66,8 @@ export default async function TopicPage({ params }: Props) {
             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mt-2">
               {topic.title}
             </h1>
-            <p className="text-[#8899BB] mt-3 text-lg max-w-2xl">{topic.description}</p>
-            <p className="text-sm text-[#4A5A7A] mt-2">{topic.articleCount} articles in this topic</p>
+            <p className="text-[#B0C0DF] mt-3 text-lg max-w-2xl">{topic.description}</p>
+            <p className="text-sm text-[#8A9BB8] mt-2">{topic.articleCount} articles in this topic</p>
           </div>
 
           {/* Difficulty breakdown */}
@@ -117,23 +117,23 @@ export default async function TopicPage({ params }: Props) {
                     <h3 className="font-bold text-white group-hover:text-[#F5A623] transition-colors mb-1">
                       {guide.title}
                     </h3>
-                    <p className="text-sm text-[#8899BB] leading-relaxed line-clamp-2">{guide.excerpt}</p>
+                    <p className="text-sm text-[#B0C0DF] leading-relaxed line-clamp-2">{guide.excerpt}</p>
                     {guide.sections && (
                       <div className="flex flex-wrap gap-2 mt-2">
                         {guide.sections.slice(0, 3).map((s) => (
-                          <span key={s} className="text-xs text-[#4A5A7A] bg-white/[0.04] px-2 py-0.5 rounded-full">
+                          <span key={s} className="text-xs text-[#8A9BB8] bg-white/[0.04] px-2 py-0.5 rounded-full">
                             {s}
                           </span>
                         ))}
                         {guide.sections.length > 3 && (
-                          <span className="text-xs text-[#4A5A7A]">+{guide.sections.length - 3} more</span>
+                          <span className="text-xs text-[#8A9BB8]">+{guide.sections.length - 3} more</span>
                         )}
                       </div>
                     )}
                   </div>
 
                   <div className="text-right flex-shrink-0">
-                    <p className="text-xs text-[#4A5A7A]">{guide.readTime} min</p>
+                    <p className="text-xs text-[#8A9BB8]">{guide.readTime} min</p>
                     <p className="text-xs text-[#F5A623] group-hover:translate-x-1 transition-transform inline-block mt-2">
                       Read →
                     </p>
@@ -154,7 +154,7 @@ export default async function TopicPage({ params }: Props) {
             <div className="flex-1 text-center sm:text-left">
               <div className="text-3xl mb-2" aria-hidden="true">🤖</div>
               <h2 className="text-xl font-bold text-white mb-1">Have a question about {topic.title}?</h2>
-              <p className="text-[#8899BB] text-sm">Ask our AI assistant for a personalised explanation.</p>
+              <p className="text-[#B0C0DF] text-sm">Ask our AI assistant for a personalised explanation.</p>
             </div>
             <Link
               href={`/assistant?prompt=Explain+${encodeURIComponent(topic.title)}+in+the+context+of+Indian+elections`}

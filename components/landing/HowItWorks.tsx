@@ -37,7 +37,7 @@ export default function HowItWorks() {
             <br />
             <span className="text-gradient">in three steps</span>
           </h2>
-          <p className="text-[#8899BB] mt-4 text-lg max-w-xl mx-auto">
+          <p className="text-[#B0C0DF] mt-4 text-lg max-w-xl mx-auto">
             We built VoxeraAI to remove every barrier between you and informed civic participation.
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function HowItWorks() {
                   Step {s.step}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">{s.title}</h3>
-                <p className="text-[#8899BB] text-sm leading-relaxed">{s.description}</p>
+                <p className="text-[#B0C0DF] text-sm leading-relaxed">{s.description}</p>
               </div>
 
               {/* Bottom accent */}

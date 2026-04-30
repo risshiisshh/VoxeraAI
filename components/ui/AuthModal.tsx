@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useAuth } from "@/lib/hooks/useAuth";
 
 type Mode = "signin" | "signup" | "reset";
@@ -36,13 +37,50 @@ function emailToFirebaseError(code: string): string {
 export default function AuthModal({ onClose }: Props) {
   const { signInWithGoogle, signInWithEmail, signUpWithEmail, resetPassword } = useAuth();
 
-  const [mode, setMode]       = useState<Mode>("signin");
-  const [email, setEmail]     = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName]       = useState("");
-  const [busy, setBusy]       = useState(false);
-  const [error, setError]     = useState("");
-  const [resetSent, setResetSent] = useState(false);
+  const [mode, setMode]             = useState<Mode>("signin");
+  const [email, setEmail]           = useState("");
+  const [password, setPassword]     = useState("");
+  const [name, setName]             = useState("");
+  const [busy, setBusy]             = useState(false);
+  const [error, setError]           = useState("");
+  const [resetSent, setResetSent]   = useState(false);
+
+  const firstFocusRef  = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Focus the close button on open
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+  }, []);
+
+  // Trap focus and close on Escape
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      // Basic focus trap: Tab cycles within the modal
+      if (e.key === "Tab") {
+        const focusable = Array.from(
+          (e.currentTarget as HTMLElement).querySelectorAll<HTMLElement>(
+            'button:not([disabled]), input:not([disabled]), a[href]'
+          )
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last  = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    },
+    [onClose]
+  );
 
   function clearError() { setError(""); }
 
@@ -86,29 +124,38 @@ export default function AuthModal({ onClose }: Props) {
     } finally { setBusy(false); }
   }
 
+  const modalTitle =
+    mode === "signup" ? "Create account" :
+    mode === "reset"  ? "Reset password" :
+    "Welcome back";
+
   return (
     /* Backdrop */
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center px-4"
       style={{ background: "rgba(10,22,40,0.85)", backdropFilter: "blur(8px)" }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-      role="dialog"
-      aria-modal="true"
-      aria-label={mode === "signup" ? "Create account" : mode === "reset" ? "Reset password" : "Sign in"}
     >
       <div
         className="card w-full max-w-md p-8 animate-fade-up relative"
         style={{ border: "1px solid rgba(245,166,35,0.2)" }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
+        onKeyDown={handleKeyDown}
       >
         {/* Close */}
         <button
+          ref={closeButtonRef}
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#4A5A7A] hover:text-white transition-colors text-lg"
-          aria-label="Close"
-        >✕</button>
+          className="absolute top-4 right-4 text-[#8A9BB8] hover:text-white transition-colors text-lg"
+          aria-label="Close sign in dialog"
+        >
+          ✕
+        </button>
 
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-6">
+        <div className="flex items-center gap-2 mb-6" aria-hidden="true">
           <span
             className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-black"
             style={{ background: "linear-gradient(135deg,#F5A623,#D4891A)" }}
@@ -119,10 +166,10 @@ export default function AuthModal({ onClose }: Props) {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-extrabold text-white mb-1">
-          {mode === "signup" ? "Create account" : mode === "reset" ? "Reset password" : "Welcome back"}
+        <h2 id="auth-modal-title" className="text-2xl font-extrabold text-white mb-1">
+          {modalTitle}
         </h2>
-        <p className="text-sm text-[#8899BB] mb-6">
+        <p className="text-sm text-[#B0C0DF] mb-6">
           {mode === "signup"
             ? "Join VoxeraAI — your AI civic guide."
             : mode === "reset"
@@ -132,14 +179,14 @@ export default function AuthModal({ onClose }: Props) {
 
         {/* Error */}
         {error && (
-          <div className="mb-4 px-4 py-3 rounded-xl text-sm text-red-300 bg-red-500/10 border border-red-500/20">
+          <div role="alert" className="mb-4 px-4 py-3 rounded-xl text-sm text-red-300 bg-red-500/10 border border-red-500/20">
             {error}
           </div>
         )}
 
         {/* Reset success */}
         {resetSent && (
-          <div className="mb-4 px-4 py-3 rounded-xl text-sm text-green-300 bg-green-500/10 border border-green-500/20">
+          <div role="status" className="mb-4 px-4 py-3 rounded-xl text-sm text-green-300 bg-green-500/10 border border-green-500/20">
             ✅ Reset link sent! Check your inbox.
           </div>
         )}
@@ -148,6 +195,7 @@ export default function AuthModal({ onClose }: Props) {
           <>
             {/* Google button */}
             <button
+              ref={firstFocusRef}
               id="auth-google-btn"
               onClick={handleGoogle}
               disabled={busy}
@@ -157,17 +205,19 @@ export default function AuthModal({ onClose }: Props) {
               Continue with Google
             </button>
 
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-3 mb-4" aria-hidden="true">
               <div className="flex-1 h-px bg-white/[0.08]" />
-              <span className="text-xs text-[#4A5A7A]">or</span>
+              <span className="text-xs text-[#8A9BB8]">or</span>
               <div className="flex-1 h-px bg-white/[0.08]" />
             </div>
 
             {/* Email form */}
-            <form onSubmit={handleEmailAuth} className="space-y-3">
+            <form onSubmit={handleEmailAuth} className="space-y-3" noValidate>
               {mode === "signup" && (
                 <div>
-                  <label htmlFor="auth-name" className="text-xs font-medium text-[#8899BB] block mb-1.5">Full Name</label>
+                  <label htmlFor="auth-name" className="text-xs font-medium text-[#B0C0DF] block mb-1.5">
+                    Full Name
+                  </label>
                   <input
                     id="auth-name"
                     type="text"
@@ -181,7 +231,9 @@ export default function AuthModal({ onClose }: Props) {
                 </div>
               )}
               <div>
-                <label htmlFor="auth-email" className="text-xs font-medium text-[#8899BB] block mb-1.5">Email</label>
+                <label htmlFor="auth-email" className="text-xs font-medium text-[#B0C0DF] block mb-1.5">
+                  Email
+                </label>
                 <input
                   id="auth-email"
                   type="email"
@@ -194,7 +246,9 @@ export default function AuthModal({ onClose }: Props) {
                 />
               </div>
               <div>
-                <label htmlFor="auth-password" className="text-xs font-medium text-[#8899BB] block mb-1.5">Password</label>
+                <label htmlFor="auth-password" className="text-xs font-medium text-[#B0C0DF] block mb-1.5">
+                  Password
+                </label>
                 <input
                   id="auth-password"
                   type="password"
@@ -230,16 +284,22 @@ export default function AuthModal({ onClose }: Props) {
             </form>
 
             {/* Switch mode */}
-            <p className="text-center text-sm text-[#8899BB] mt-5">
+            <p className="text-center text-sm text-[#B0C0DF] mt-5">
               {mode === "signin" ? (
                 <>Don&apos;t have an account?{" "}
-                  <button onClick={() => { setMode("signup"); clearError(); }} className="text-[#F5A623] hover:opacity-80 font-medium">
+                  <button
+                    onClick={() => { setMode("signup"); clearError(); }}
+                    className="text-[#F5A623] hover:opacity-80 font-medium"
+                  >
                     Sign up free
                   </button>
                 </>
               ) : (
                 <>Already have an account?{" "}
-                  <button onClick={() => { setMode("signin"); clearError(); }} className="text-[#F5A623] hover:opacity-80 font-medium">
+                  <button
+                    onClick={() => { setMode("signin"); clearError(); }}
+                    className="text-[#F5A623] hover:opacity-80 font-medium"
+                  >
                     Sign in
                   </button>
                 </>
@@ -250,9 +310,11 @@ export default function AuthModal({ onClose }: Props) {
 
         {/* Reset password form */}
         {mode === "reset" && !resetSent && (
-          <form onSubmit={handleReset} className="space-y-3">
+          <form onSubmit={handleReset} className="space-y-3" noValidate>
             <div>
-              <label htmlFor="reset-email" className="text-xs font-medium text-[#8899BB] block mb-1.5">Email</label>
+              <label htmlFor="reset-email" className="text-xs font-medium text-[#B0C0DF] block mb-1.5">
+                Email
+              </label>
               <input
                 id="reset-email"
                 type="email"
@@ -286,9 +348,9 @@ export default function AuthModal({ onClose }: Props) {
 
         {/* Guest note */}
         {mode !== "reset" && (
-          <p className="text-xs text-[#4A5A7A] text-center mt-4">
+          <p className="text-xs text-[#8A9BB8] text-center mt-4">
             No account? You can still use VoxeraAI as a guest.{" "}
-            <button onClick={onClose} className="text-[#8899BB] hover:text-white underline">
+            <button onClick={onClose} className="text-[#B0C0DF] hover:text-white underline">
               Continue as guest
             </button>
           </p>

@@ -19,7 +19,7 @@ export default function TrustBar() {
             <div key={s.label} className="flex items-center gap-4">
               <div>
                 <div className="text-2xl font-extrabold text-gradient">{s.value}</div>
-                <div className="text-xs text-[#8899BB] mt-0.5 uppercase tracking-widest">
+                <div className="text-xs text-[#B0C0DF] mt-0.5 uppercase tracking-widest">
                   {s.label}
                 </div>
               </div>
