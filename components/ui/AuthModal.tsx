@@ -89,9 +89,9 @@ export default function AuthModal({ onClose }: Props) {
     try {
       await signInWithGoogle();
       onClose();
-    } catch (e: unknown) {
-      const err = e as { code?: string };
-      setError(emailToFirebaseError(err.code ?? ""));
+    } catch (e: any) {
+      console.error(e);
+      setError(emailToFirebaseError(e.code ?? "") + (e.message ? ` [${e.message}]` : ""));
     } finally { setBusy(false); }
   }
 
@@ -106,9 +106,9 @@ export default function AuthModal({ onClose }: Props) {
         await signInWithEmail(email, password);
       }
       onClose();
-    } catch (e: unknown) {
-      const err = e as { code?: string };
-      setError(emailToFirebaseError(err.code ?? ""));
+    } catch (e: any) {
+      console.error(e);
+      setError(emailToFirebaseError(e.code ?? "") + (e.message ? ` [${e.message}]` : ""));
     } finally { setBusy(false); }
   }
 
@@ -118,9 +118,9 @@ export default function AuthModal({ onClose }: Props) {
     try {
       await resetPassword(email);
       setResetSent(true);
-    } catch (e: unknown) {
-      const err = e as { code?: string };
-      setError(emailToFirebaseError(err.code ?? ""));
+    } catch (e: any) {
+      console.error(e);
+      setError(emailToFirebaseError(e.code ?? "") + (e.message ? ` [${e.message}]` : ""));
     } finally { setBusy(false); }
   }
 
